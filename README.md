@@ -40,15 +40,24 @@ Eksik değerler, aykırı değerler ve kategorik değişkenlerin işlenmesi gibi
 Uygulanan Adımlar:
 
 Sıfır Fiyatlı Araçların Temizlenmesi: price sütunundaki 0 değeri olan 4,798 araç (%9.60) veri setinden çıkarıldı, çünkü bu değerlerin hatalı veya anlamsız olduğu varsayıldı.
-Aykırı Değer Temizliği (price ve odometer): price ve odometer sütunlarındaki aşırı yüksek aykırı değerler, sırasıyla %99.5'lik üst çeyrek değerleri kullanılarak temizlendi. Bu, fiyatın $82,998.99, kilometrenin 345,560.00 üzerinde olduğu araçların veri setinden çıkarılması anlamına geliyordu.
-Eski Araç Yıllarının Temizlenmesi (year): year sütunundaki 1950 yılından daha eski araçlar, aykırı değer olarak kabul edilip veri setinden çıkarıldı.
-Eksik Değer Doldurma (lat, long): lat ve long sütunlarındaki eksik değerler, aykırı değerlere karşı daha sağlam olan medyan değerleri ile dolduruldu.
-Eksik Değer Doldurma (Rastgele Örnekleme): cylinders, condition, VIN, drive, paint_color, type gibi kategorik sütunlardaki eksik değerler, mevcut dolu değerler arasından rastgele örnekleme yapılarak dolduruldu. (Not: Bu aşamada bu sütunlarda zaten eksik değer kalmamıştı).
-Multicollinearity Tespiti: year ile vehicle_age arasında -1.000, odometer ile odometer_per_year arasında 0.821 gibi yüksek korelasyonlar tespit edildi. Bu tür çoklu bağlantılar modelin kararlılığını etkileyebileceğinden, modelleme aşamasında bu durum göz önünde bulundurulmalıdır.
-Yüksek Kardinaliteli/Gereksiz Sütunların Silinmesi: url, region_url, VIN, image_url, description, cylinders ve posting_date gibi sütunlar, ya yüksek kardinaliteleri nedeniyle One-Hot Encoding sonrası aşırı boyutluluğa yol açacakları ya da doğrudan modele anlamlı katkı sağlamayacakları için silindi.
-Kategorik Değişken Kodlama (One-Hot Encoding): Kalan 12 adet kategorik sütun (region, manufacturer, model, condition, fuel, title_status, transmission, drive, type, paint_color, state, posting_date) pd.get_dummies(drop_first=True) kullanılarak One-Hot Encoding'e tabi tutuldu. Bu işlem sonucunda veri seti 43,716 satır ve 49,514 sütuna ulaştı.
-Veri Seti Bölme (Train-Test Split): Veri seti, model eğitimi için %80 (X_train, y_train) ve model değerlendirmesi için %20 (X_test, y_test) oranında rastgele bölündü (random_state=42).
-Özellik Ölçeklendirme (Feature Scaling): Sayısal özellikler (StandardScaler) kullanılarak standardize edildi. Bu, tüm özelliklerin ortalamasının 0 ve standart sapmasının 1 olmasını sağlayarak mesafeye dayalı ve gradyan iniş tabanlı modellerin performansını iyileştirdi.
+
+-Aykırı Değer Temizliği (price ve odometer): price ve odometer sütunlarındaki aşırı yüksek aykırı değerler, sırasıyla %99.5'lik üst çeyrek değerleri kullanılarak temizlendi. Bu, fiyatın $82,998.99, kilometrenin 345,560.00 üzerinde olduğu araçların veri setinden çıkarılması anlamına geliyordu.
+
+-Eski Araç Yıllarının Temizlenmesi (year): year sütunundaki 1950 yılından daha eski araçlar, aykırı değer olarak kabul edilip veri setinden çıkarıldı.
+
+-Eksik Değer Doldurma (lat, long): lat ve long sütunlarındaki eksik değerler, aykırı değerlere karşı daha sağlam olan medyan değerleri ile dolduruldu.
+
+-Eksik Değer Doldurma (Rastgele Örnekleme): cylinders, condition, VIN, drive, paint_color, type gibi kategorik sütunlardaki eksik değerler, mevcut dolu değerler arasından rastgele örnekleme yapılarak dolduruldu. (Not: Bu aşamada bu sütunlarda zaten eksik değer kalmamıştı).
+
+-Multicollinearity Tespiti: year ile vehicle_age arasında -1.000, odometer ile odometer_per_year arasında 0.821 gibi yüksek korelasyonlar tespit edildi. Bu tür çoklu bağlantılar modelin kararlılığını etkileyebileceğinden, modelleme aşamasında bu durum göz önünde bulundurulmalıdır.
+
+-Yüksek Kardinaliteli/Gereksiz Sütunların Silinmesi: url, region_url, VIN, image_url, description, cylinders ve posting_date gibi sütunlar, ya yüksek kardinaliteleri nedeniyle One-Hot Encoding sonrası aşırı boyutluluğa yol açacakları ya da doğrudan modele anlamlı katkı sağlamayacakları için silindi.
+
+-Kategorik Değişken Kodlama (One-Hot Encoding): Kalan 12 adet kategorik sütun (region, manufacturer, model, condition, fuel, title_status, transmission, drive, type, paint_color, state, posting_date) pd.get_dummies(drop_first=True) kullanılarak One-Hot Encoding'e tabi tutuldu. Bu işlem sonucunda veri seti 43,716 satır ve 49,514 sütuna ulaştı.
+
+-Veri Seti Bölme (Train-Test Split): Veri seti, model eğitimi için %80 (X_train, y_train) ve model değerlendirmesi için %20 (X_test, y_test) oranında rastgele bölündü (random_state=42).
+
+-Özellik Ölçeklendirme (Feature Scaling): Sayısal özellikler (StandardScaler) kullanılarak standardize edildi. Bu, tüm özelliklerin ortalamasının 0 ve standart sapmasının 1 olmasını sağlayarak mesafeye dayalı ve gradyan iniş tabanlı modellerin performansını iyileştirdi.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -57,12 +66,17 @@ Veri setinin yapısını daha iyi anlamak için çeşitli görselleştirme ve is
 
 Uygulanan Analizler:
 
-'price' Sütunu Dağılımı: Histogram ve KDE plotları, price sütununun sıfır değerler çıkarıldıktan ve aykırı değerler temizlendikten sonra bile hala sağa çarpık bir dağılım gösterdiğini ortaya koydu. Q-Q plot da normal dağılımdan sapmayı doğruladı.
-'condition' ve 'price' İlişkisi: Boxplot, araç durumu iyileştikçe fiyatların genel olarak arttığını, ancak her durumda geniş bir fiyat aralığı olduğunu gösterdi.
-Korelasyon Analizi: price ile diğer sayısal değişkenler arasındaki korelasyonlar incelendi. En güçlü pozitif korelasyon year (0.364) ile, en güçlü negatif korelasyon ise odometer (-0.494) ile tespit edildi. price_per_mile (%0.045) ve odometer_per_year (%-0.295) gibi türetilmiş özelliklerin de anlamlı korelasyonları vardı.
-En Önemli 9 Değişkenin Dağılımı: price ile en güçlü ilişkili 9 değişkenin (odometer, year, vehicle_age, odometer_per_year, description_length, num_cylinders, id, lat, long) histogram ve KDE plotları incelendi. Özellikle year, vehicle_age, description_length, lat ve long sütunlarında yüksek çarpıklıklar gözlemlendi.
-Aykırı Değer Tespiti (IQR Yöntemi): Capping işlemi sonrası bile, 1.5 * IQR kuralına göre long (%28.3), price_per_mile (%11.7), lat (%8.3) gibi sütunlarda hala önemli miktarda aykırı değer bulunduğu tespit edildi. year ve vehicle_age'de %4.3, odometer'da %0.9 aykırı değer saptandı.
-Pair Plotlar: price ile en ilişkili 6 değişkenin ikili ilişkileri incelendi. odometer ve price arasında belirgin negatif, year ve price arasında pozitif trendler gözlendi.
+-'price' Sütunu Dağılımı: Histogram ve KDE plotları, price sütununun sıfır değerler çıkarıldıktan ve aykırı değerler temizlendikten sonra bile hala sağa çarpık bir dağılım gösterdiğini ortaya koydu. Q-Q plot da normal dağılımdan sapmayı doğruladı.
+
+-'condition' ve 'price' İlişkisi: Boxplot, araç durumu iyileştikçe fiyatların genel olarak arttığını, ancak her durumda geniş bir fiyat aralığı olduğunu gösterdi.
+
+-Korelasyon Analizi: price ile diğer sayısal değişkenler arasındaki korelasyonlar incelendi. En güçlü pozitif korelasyon year (0.364) ile, en güçlü negatif korelasyon ise odometer (-0.494) ile tespit edildi. price_per_mile (%0.045) ve odometer_per_year (%-0.295) gibi türetilmiş özelliklerin de anlamlı korelasyonları vardı.
+
+-En Önemli 9 Değişkenin Dağılımı: price ile en güçlü ilişkili 9 değişkenin (odometer, year, vehicle_age, odometer_per_year, description_length, num_cylinders, id, lat, long) histogram ve KDE plotları incelendi. Özellikle year, vehicle_age, description_length, lat ve long sütunlarında yüksek çarpıklıklar gözlemlendi.
+
+-Aykırı Değer Tespiti (IQR Yöntemi): Capping işlemi sonrası bile, 1.5 * IQR kuralına göre long (%28.3), price_per_mile (%11.7), lat (%8.3) gibi sütunlarda hala önemli miktarda aykırı değer bulunduğu tespit edildi. year ve vehicle_age'de %4.3, odometer'da %0.9 aykırı değer saptandı.
+
+-Pair Plotlar: price ile en ilişkili 6 değişkenin ikili ilişkileri incelendi. odometer ve price arasında belirgin negatif, year ve price arasında pozitif trendler gözlendi.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
